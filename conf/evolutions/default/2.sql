@@ -11,7 +11,7 @@ insert into company (id,name) values (  6,'King ICT');
 insert into company (id,name) values (  7,'Croz');
 
 
-insert into speaker (id,name,session,registrated,company_id) values (  1,'Kresimir Dujmic','Java or Scala – Web development with Playframework 2.5.x?','1991-01-01',1);
+insert into speaker (id,name,session,registrated,company_id) values (  1,'Kresimir Dujmic','Java or Scala – Web development with Playframework 2.5.x?','2017-01-01',1);
 insert into speaker (id,name,session,registrated,company_id) values (  2,'Michael Hackstein','Handling Billions of Edges in a Graph Database','2017-01-01',2);
 insert into speaker (id,name,session,registrated,company_id) values (  3,'Matjaž B. Jurič','Cloud-native Architectures and Java','2016-01-01',3);
 insert into speaker (id,name,session,registrated,company_id) values (  4,'Matija Dujmović','True RESTful Java web services with Elide and Katharsis','2016-12-06',4);
