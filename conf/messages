@@ -1,0 +1,3 @@
+# Messages
+
+speakers.list.title={0,choice,0#No speakers|1#One speaker|1<{0,number,integer} speakers} found

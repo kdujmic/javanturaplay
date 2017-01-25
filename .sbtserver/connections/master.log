@@ -1,0 +1,25 @@
+New log file opened at Wed Jan 25 08:39:20 CET 2017 by 1804@dujmic
+Taking next connection to: 61198
+New client attempting to connect on port: 61199-61198
+  Address = /192.168.1.25:61198
+This client on port 61199 has uuid 8e3c7057-cf62-4d18-b86a-93124fc959f5 configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
+Connected Clients: play-fork-run-8e3c7057-cf62-4d18-b86a-93124fc959f5
+Taking next connection to: 61198
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 61198
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 61198
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 61198
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 61198
+Checking to see if clients are empty...
+No non-daemon clients connected after 3 min. Shutting down.
+Server socket thread exiting.
+0 clients open, will close them...
+All client sockets have been closed.
+Closing the 1804@dujmic logs at Wed Jan 25 08:54:20 CET 2017, goodbye.

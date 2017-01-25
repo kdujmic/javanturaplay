@@ -1,0 +1,36 @@
+@(speakerForm: Form[Speaker], companies: Seq[(String, String)])(implicit messages: Messages)
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) } 
+
+@main {
+    
+    <h1>Add a speaker</h1>
+    
+    @form(routes.HomeController.save()) {
+        
+        <fieldset>
+        
+            @inputText(speakerForm("name"), '_label -> "Speaker name", '_help -> "")
+            @inputText(speakerForm("session"), '_label -> "Session", '_help -> "")
+            @inputDate(speakerForm("registrated"), '_label -> "Registration date", '_help -> "")
+
+            @select(
+                speakerForm("company"),
+                companies, 
+                '_label -> "Company", '_default -> "-- Choose a company --",
+                '_showConstraints -> false
+            )
+            
+
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" value="Create this speaker" class="btn primary"> or
+            <a href="@routes.HomeController.list()" class="btn">Cancel</a>
+        </div>
+        
+    }
+    
+}
