@@ -1,12 +1,13 @@
 package models
 
 import java.util.Date
+import javax.inject.Inject
 
 import anorm.SqlParser._
 import anorm._
-import org.joda.time.DateTime
-import play.api.Play.current
 import play.api.db._
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
 import scala.language.postfixOps
 
@@ -18,8 +19,8 @@ case class Speaker(id: Option[Long] = None, name: String, session: String, regis
  * Helper for pagination.
  */
 case class Page[A](items: Seq[A], page: Int, offset: Long, total: Long) {
-  lazy val prev = Option(page - 1).filter(_ >= 0)
-  lazy val next = Option(page + 1).filter(_ => (offset + items.size) < total)
+  lazy val prev: Option[Int] = Option(page - 1).filter(_ >= 0)
+  lazy val next: Option[Int] = Option(page + 1).filter(_ => (offset + items.size) < total)
 }
 
 object Speaker {
@@ -29,7 +30,7 @@ object Speaker {
   /**
    * Parse a Speaker from a ResultSet
    */
-  val simple = {
+  val simple: RowParser[Speaker] = {
     get[Option[Long]]("speaker.id") ~
     get[String]("speaker.name") ~
     get[String]("speaker.session") ~
@@ -37,22 +38,43 @@ object Speaker {
     get[Option[Long]]("speaker.company_id") map {
       case id~name~session~registrated~companyId => Speaker(id, name, session, registrated, companyId)
     }
+
   }
-  
-  /**
-   * Parse a (Speaker,Company) from a ResultSet
-   */
-  val withCompany = Speaker.simple ~ (Company.simple ?) map {
-    case speaker~company => (speaker,company)
-  }
-  
+
+  implicit val speakerWrites: OWrites[Speaker] = Json.writes[Speaker]
+
+  implicit val speakerRead: Reads[Speaker] = Json.reads[Speaker]
+
+
+
+  val speakerWriteShort: Writes[Speaker] = (
+    (__ \ "id").writeNullable[Long] ~
+      (__ \ "name").write[String] ~
+      (__ \ "session").write[String]
+    )((speaker: Speaker) => (
+    speaker.id,
+    speaker.name,
+    speaker.session
+  ))
+
+
+
+  @javax.inject.Singleton
+  class SpeakerService @Inject() (dbapi: DBApi) {
+
+    private val db = dbapi.database("default")
+
+    val withCompany: RowParser[(Speaker, Option[Company])] = simple ~ (Company.simple ?) map {
+      case speaker~company => (speaker,company)
+    }
+
   // -- Queries
   
   /**
    * Retrieve a speaker from the id.
    */
   def findById(id: Long): Option[Speaker] = {
-    DB.withConnection { implicit connection =>
+    db.withConnection { implicit connection =>
       SQL("select * from speaker where id = {id}").on('id -> id).as(Speaker.simple.singleOpt)
     }
   }
@@ -69,7 +91,7 @@ object Speaker {
     
     val offest = pageSize * page
     
-    DB.withConnection { implicit connection =>
+    db.withConnection { implicit connection =>
       
       val speakers = SQL(
         """
@@ -84,7 +106,7 @@ object Speaker {
         'offset -> offest,
         'filter -> filter,
         'orderBy -> orderBy
-      ).as(Speaker.withCompany *)
+      ).as(withCompany *)
 
       val totalRows = SQL(
         """
@@ -108,8 +130,8 @@ object Speaker {
    * @param id The speaker id
    * @param speaker The speaker values.
    */
-  def update(id: Long, speaker: Speaker) = {
-    DB.withConnection { implicit connection =>
+  def update(id: Long, speaker: Speaker): Int = {
+    db.withConnection { implicit connection =>
       SQL(
         """
           update speaker
@@ -131,8 +153,8 @@ object Speaker {
    *
    * @param speaker The speaker values.
    */
-  def insert(speaker: Speaker) = {
-    DB.withConnection { implicit connection =>
+  def insert(speaker: Speaker): Int = {
+    db.withConnection { implicit connection =>
       SQL(
         """
           insert into speaker values (
@@ -154,35 +176,37 @@ object Speaker {
    *
    * @param id Id of the speaker to delete.
    */
-  def delete(id: Long) = {
-    DB.withConnection { implicit connection =>
+  def delete(id: Long): Int = {
+    db.withConnection { implicit connection =>
       SQL("delete from speaker where id = {id}").on('id -> id).executeUpdate()
     }
   }
+
+    /**
+      * Construct the Map[String,String] needed to fill a select options set.
+      */
+    def options: Seq[(String,String)] = db.withConnection { implicit connection =>
+      SQL("select * from company order by name").as(Company.simple *).
+        foldLeft[Seq[(String, String)]](Nil) { (cs, c) =>
+        c.id.fold(cs) { id => cs :+ (id.toString -> c.name) }
+      }
+    }
   
-}
+}}
 
 object Company {
     
   /**
    * Parse a Company from a ResultSet
    */
-  val simple = {
+  val simple: RowParser[Company] = {
     get[Option[Long]]("company.id") ~
     get[String]("company.name") map {
       case id~name => Company(id, name)
     }
   }
   
-  /**
-   * Construct the Map[String,String] needed to fill a select options set.
-   */
-  def options: Seq[(String,String)] = DB.withConnection { implicit connection =>
-    SQL("select * from company order by name").as(Company.simple *).
-      foldLeft[Seq[(String, String)]](Nil) { (cs, c) => 
-        c.id.fold(cs) { id => cs :+ (id.toString -> c.name) }
-      }
-  }
+
   
 }
 

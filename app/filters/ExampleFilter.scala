@@ -4,7 +4,7 @@ import akka.stream.Materializer
 import javax.inject._
 import play.api.mvc._
 import scala.concurrent.{ExecutionContext, Future}
-
+import play.api.http.HeaderNames._
 /**
  * This is a simple filter that adds a header to all requests. It's
  * added to the application's list of filters by the
@@ -26,7 +26,7 @@ class ExampleFilter @Inject()(
     // and eventually call the action. Take the result and modify it
     // by adding a new header.
     nextFilter(requestHeader).map { result =>
-      result.withHeaders("X-ExampleFilter" -> "foo")
+      result.withHeaders("X-ExampleFilter" -> "foo", CACHE_CONTROL -> "no-cache")
     }
   }
 

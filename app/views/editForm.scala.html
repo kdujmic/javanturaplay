@@ -35,5 +35,13 @@
     @form(routes.HomeController.delete(id), 'class -> "topRight") {
         <input type="submit" value="Delete this speaker" class="btn danger">
     }
+
+    @form(routes.HomeController.jsonValue(id), 'class -> "bottonLeft") {
+        <input type="submit" value="JSON" class="btn information">
+    }
+
+    @form(routes.HomeController.jsonValueShort(id), 'class -> "bottonLeft") {
+        <input type="submit" value="JSON short" class="btn information">
+    }
     
 }

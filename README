@@ -1,16 +1,15 @@
-This is your new Play application
+Javantura v4 - play seed project & example
 =================================
 
-This file will be packaged with your application when using `activator dist`.
+Application is simple in memory speakers database using H2 as data store
 
-There are several demonstration files available in this template.
 
 Controllers
 ===========
 
 - HomeController.scala:
 
-  Shows how to handle simple HTTP requests.
+  Central controller for handling user action-s.
 
 - AsyncController.scala:
 
@@ -47,3 +46,8 @@ Filters
 - ExampleFilter.scala
 
   A simple filter that adds a header to every response.
+
+
+  This file will be packaged with your application when using `activator dist`.
+
+  There are several demonstration files available in this template.

@@ -15,9 +15,17 @@ POST    /speakers                  controllers.HomeController.save
 # Edit existing computer
 GET     /speakers/:id              controllers.HomeController.edit(id:Long)
 POST    /speakers/:id              controllers.HomeController.update(id:Long)
+POST    /speakers/:id/json         controllers.HomeController.jsonValue(id:Long)
+POST    /speakers/:id/jsonshort         controllers.HomeController.jsonValueShort(id:Long)
 
 # Delete a computer
 POST    /speakers/:id/delete       controllers.HomeController.delete(id:Long)
+
+
+# An example controller showing how to use dependency injection
+GET     /count                      controllers.CountController.count
+# An example controller showing how to write asynchronous code
+GET     /message                    controllers.AsyncController.message
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

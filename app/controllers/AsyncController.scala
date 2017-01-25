@@ -1,11 +1,13 @@
 package controllers
 
-import akka.actor.ActorSystem
+import java.util.Calendar
 import javax.inject._
-import play.api._
+
+import akka.actor.ActorSystem
 import play.api.mvc._
-import scala.concurrent.{ExecutionContext, Future, Promise}
+
 import scala.concurrent.duration._
+import scala.concurrent.{ExecutionContext, Future, Promise}
 
 /**
  * This controller creates an `Action` that demonstrates how to write
@@ -22,19 +24,19 @@ class AsyncController @Inject() (actorSystem: ActorSystem)(implicit exec: Execut
 
   /**
    * Create an Action that returns a plain text message after a delay
-   * of 1 second.
+   * of 5 second.
    *
    * The configuration in the `routes` file means that this method
    * will be called when the application receives a `GET` request with
    * a path of `/message`.
    */
-  def message = Action.async {
-    getFutureMessage(1.second).map { msg => Ok(msg) }
+  def message: Action[AnyContent] = Action.async {
+    getFutureMessage(5.second).map { msg => Ok(msg) }
   }
 
   private def getFutureMessage(delayTime: FiniteDuration): Future[String] = {
     val promise: Promise[String] = Promise[String]()
-    actorSystem.scheduler.scheduleOnce(delayTime) { promise.success("Hi!") }
+    actorSystem.scheduler.scheduleOnce(delayTime) { promise.success("Hi after 5 sec delay! " + Calendar.getInstance().getTime) }
     promise.future
   }
 
