@@ -2,8 +2,11 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Default path will just redirect to the computer list
+# Default path will just redirect to the speaker list
 GET     /                           controllers.HomeController.index
+
+# Speaker list fetched via Java Controller
+# GET /javahome                       controllers.HomeControllerJava.index
 
 # Computers list (look at the default values for pagination parameters)
 GET     /speakers                  controllers.HomeController.list(p:Int ?= 0, s:Int ?= 2, f ?= "")

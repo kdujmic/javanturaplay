@@ -9,7 +9,7 @@ class ModelSpec extends PlaySpec with OneAppPerSuite {
 
   // -- Date helpers
 
-  def dateIs(date: java.util.Date, str: String) = {
+  def dateIs(date: java.util.Date, str: String): Boolean = {
     new java.text.SimpleDateFormat("yyyy-MM-dd").format(date) == str
   }
 
@@ -31,7 +31,7 @@ class ModelSpec extends PlaySpec with OneAppPerSuite {
       val speakers = speakerService.list()
 
       speakers.total must equal(9)
-      speakers.items must have length(9)
+      speakers.items must have length 9
     }
 
     "be updated if needed" in {
@@ -41,10 +41,10 @@ class ModelSpec extends PlaySpec with OneAppPerSuite {
         registrated=None,
         companyId=Some(1)))
 
-      val macintosh = speakerService.findById(1).get
+      val kresoBean = speakerService.findById(1).get
 
-      macintosh.name must equal("Krešimir Dujmić")
-      macintosh.registrated mustBe None
+      kresoBean.name must equal("Krešimir Dujmić")
+      kresoBean.registrated mustBe None
     }
 
   }

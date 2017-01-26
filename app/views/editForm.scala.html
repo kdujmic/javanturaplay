@@ -1,4 +1,4 @@
-@(id: Long, speakerForm: Form[Speaker], companies : Seq[(String, String)])(implicit messages: Messages)
+@(id: Long, speakerForm: play.api.data.Form[Speaker], companies : Seq[(String, String)])(implicit messages: Messages)
 
 @import helper._
 
@@ -39,9 +39,4 @@
     @form(routes.HomeController.jsonValue(id), 'class -> "bottonLeft") {
         <input type="submit" value="JSON" class="btn information">
     }
-
-    @form(routes.HomeController.jsonValueShort(id), 'class -> "bottonLeft") {
-        <input type="submit" value="JSON short" class="btn information">
-    }
-    
 }
