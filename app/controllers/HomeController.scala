@@ -47,10 +47,8 @@ class HomeController @Inject()(val messagesApi: MessagesApi, speakerService: Spe
   /**
     * Handle default path requests, redirect to speakers list
     */
-
-
   def index = Action { request =>
-    Ok("Got request [" + request + "]")
+    Home
   }
 
   /**

@@ -5,6 +5,7 @@ import javax.inject._
 
 import akka.actor.ActorSystem
 import play.api.mvc._
+import services.ReturnTimeFromJava
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future, Promise}
@@ -36,7 +37,7 @@ class AsyncController @Inject() (actorSystem: ActorSystem)(implicit exec: Execut
 
   private def getFutureMessage(delayTime: FiniteDuration): Future[String] = {
     val promise: Promise[String] = Promise[String]()
-    actorSystem.scheduler.scheduleOnce(delayTime) { promise.success("Hi after 5 sec delay! " + Calendar.getInstance().getTime) }
+    actorSystem.scheduler.scheduleOnce(delayTime) { promise.success("Hi after 5 sec delay! " + ReturnTimeFromJava.justReturnTime ) }
     promise.future
   }
 
