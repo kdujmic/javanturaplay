@@ -8,20 +8,20 @@ GET     /                           controllers.HomeController.index
 # Speaker list fetched via Java Controller
 # GET /javahome                       controllers.HomeControllerJava.index
 
-# Computers list (look at the default values for pagination parameters)
+# Speakers list (look at the default values for pagination parameters)
 GET     /speakers                  controllers.HomeController.list(p:Int ?= 0, s:Int ?= 2, f ?= "")
 
-# Add computer
+# Add speaker
 GET     /speakers/new              controllers.HomeController.create
 POST    /speakers                  controllers.HomeController.save
 
-# Edit existing computer
+# Edit existing speaker
 GET     /speakers/:id              controllers.HomeController.edit(id:Long)
 POST    /speakers/:id              controllers.HomeController.update(id:Long)
 POST    /speakers/:id/json         controllers.HomeController.jsonValue(id:Long)
-POST    /speakers/:id/jsonshort         controllers.HomeController.jsonValueShort(id:Long)
+POST    /speakers/:id/jsonshort    controllers.HomeController.jsonValueShort(id:Long)
 
-# Delete a computer
+# Delete a speaker
 POST    /speakers/:id/delete       controllers.HomeController.delete(id:Long)
 
 
